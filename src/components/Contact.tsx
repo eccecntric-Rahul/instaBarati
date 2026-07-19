@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { booking, offer, site } from "@/lib/content";
+import { getSupabase } from "@/lib/supabase";
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -17,8 +18,8 @@ export default function Contact() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => setForm({ ...form, [field]: e.target.value });
 
-  // Phase 1: the enquiry opens WhatsApp with a prefilled message.
-  // Phase 3 replaces this with Supabase insert + Resend email.
+  // Opens WhatsApp with a prefilled message (must happen synchronously so the
+  // popup isn't blocked) and saves the enquiry to Supabase in the background.
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const text = encodeURIComponent(
@@ -26,6 +27,19 @@ export default function Contact() {
     );
     window.open(`https://wa.me/${site.whatsappNumber}?text=${text}`, "_blank");
     setSent(true);
+
+    getSupabase()
+      .from("enquiries")
+      .insert({
+        name: form.name,
+        phone: form.phone,
+        event_date: form.eventDate || null,
+        city: form.city,
+        message: form.message || null,
+      })
+      .then(({ error }) => {
+        if (error) console.error("Failed to save enquiry:", error.message);
+      });
   };
 
   const inputClass =
