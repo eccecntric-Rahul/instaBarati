@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { booking, offer, site } from "@/lib/content";
+import { booking, site } from "@/lib/content";
 import { getSupabase } from "@/lib/supabase";
+import type { OfferSettings } from "@/lib/cms";
 
-export default function Contact() {
+export default function Contact({ offer }: { offer: OfferSettings }) {
   const [form, setForm] = useState({
     name: "",
     phone: "",

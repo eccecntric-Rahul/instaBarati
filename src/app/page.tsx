@@ -10,21 +10,42 @@ import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import {
+  getHeroVideo,
+  getOffer,
+  getPackageTiers,
+  getPortfolioCategories,
+  getTestimonialItems,
+  getTestimonialVideos,
+} from "@/lib/cms";
 
-export default function Home() {
+// Editable content is re-fetched from Supabase at most every 5 minutes.
+export const revalidate = 300;
+
+export default async function Home() {
+  const [offer, tiers, testimonialItems, portfolioCategories, heroVideo, testimonialVideos] =
+    await Promise.all([
+      getOffer(),
+      getPackageTiers(),
+      getTestimonialItems(),
+      getPortfolioCategories(),
+      getHeroVideo(),
+      getTestimonialVideos(),
+    ]);
+
   return (
     <>
       <Navbar />
       <main>
-        <Hero />
+        <Hero offer={offer} heroVideo={heroVideo} />
         <Problems />
         <Services />
         <Process />
         <Different />
-        <Packages />
-        <Portfolio />
-        <Testimonials />
-        <Contact />
+        <Packages tiers={tiers} />
+        <Portfolio categories={portfolioCategories} />
+        <Testimonials items={testimonialItems} videos={testimonialVideos} />
+        <Contact offer={offer} />
       </main>
       <Footer />
       <WhatsAppButton />

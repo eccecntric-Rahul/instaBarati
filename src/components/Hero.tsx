@@ -1,12 +1,13 @@
-import { site, offer, heroVideo } from "@/lib/content";
+import { site } from "@/lib/content";
+import type { OfferSettings } from "@/lib/cms";
 
-const chips = [
-  "⚡ Reels within 24 hours",
-  "🔴 Live stories during events",
-  "📈 1.5M+ views on our reels",
-];
-
-export default function Hero() {
+export default function Hero({
+  offer,
+  heroVideo,
+}: {
+  offer: OfferSettings;
+  heroVideo: string;
+}) {
   return (
     <section id="top" className="relative overflow-hidden">
       {/* Pastel wash + floating blobs */}
@@ -71,16 +72,6 @@ export default function Hero() {
             </a>
           </div>
 
-          <ul className="mt-9 flex flex-wrap justify-center gap-2 lg:justify-start">
-            {chips.map((chip) => (
-              <li
-                key={chip}
-                className="rounded-full border border-line bg-white/70 px-3.5 py-1.5 text-xs text-navy/80 shadow-sm backdrop-blur sm:text-sm"
-              >
-                {chip}
-              </li>
-            ))}
-          </ul>
         </div>
 
         {/* Reel frame — desktop only; mobile gets the background video instead */}

@@ -16,6 +16,21 @@ export default function Footer() {
       <p className="mt-5 text-xs text-slate/70">
         © {new Date().getFullYear()} {site.name}. All rights reserved.
       </p>
+      <p className="mt-2 text-xs text-slate/70">
+        Made with{" "}
+        <span aria-label="love" className="text-rose">
+          ♥
+        </span>{" "}
+        by{" "}
+        <a
+          href="https://www.linkedin.com/in/rahulkumar-webdev/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-navy underline-offset-2 transition hover:text-gold hover:underline"
+        >
+          Rahul Kumar
+        </a>
+      </p>
     </footer>
   );
 }

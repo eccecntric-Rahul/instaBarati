@@ -1,13 +1,14 @@
 import { packages } from "@/lib/content";
+import type { PackageTier } from "@/lib/cms";
 import SectionHeading from "./SectionHeading";
 
-export default function Packages() {
+export default function Packages({ tiers }: { tiers: PackageTier[] }) {
   return (
     <section id="packages" className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
       <SectionHeading title={packages.heading} subtitle={packages.subheading} />
 
       <div className="grid gap-6 lg:grid-cols-3">
-        {packages.tiers.map((tier) => (
+        {tiers.map((tier) => (
           <div
             key={tier.name}
             className={`relative flex flex-col rounded-3xl p-6 sm:p-8 ${

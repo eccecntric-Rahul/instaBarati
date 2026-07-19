@@ -2,14 +2,16 @@
 
 import { useRef, useState } from "react";
 import { portfolio, site } from "@/lib/content";
+import type { PortfolioCategory } from "@/lib/cms";
 import SectionHeading from "./SectionHeading";
 
-export default function Portfolio() {
-  const [active, setActive] = useState(portfolio.categories[0].id);
+export default function Portfolio({ categories }: { categories: PortfolioCategory[] }) {
+  const [active, setActive] = useState(categories[0]?.id);
   const [playing, setPlaying] = useState<string | null>(null);
   const videoRefs = useRef<Map<string, HTMLVideoElement>>(new Map());
 
-  const category = portfolio.categories.find((c) => c.id === active)!;
+  const category = categories.find((c) => c.id === active) ?? categories[0];
+  if (!category) return null;
 
   // Only one reel plays at a time — starting one pauses the others.
   const onPlay = (src: string) => {
@@ -34,7 +36,7 @@ export default function Portfolio() {
         <SectionHeading title={portfolio.heading} subtitle={portfolio.subheading} />
 
         <div className="mb-8 flex flex-wrap justify-center gap-2 sm:gap-3">
-          {portfolio.categories.map((c) => (
+          {categories.map((c) => (
             <button
               key={c.id}
               onClick={() => selectTab(c.id)}
@@ -61,7 +63,7 @@ export default function Portfolio() {
                   else videoRefs.current.delete(item.video);
                 }}
                 src={item.video}
-                poster={item.poster}
+                poster={item.poster ?? undefined}
                 preload="none"
                 playsInline
                 controls={playing === item.video}
